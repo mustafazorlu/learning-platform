@@ -1,0 +1,1 @@
+-redis nedir, arastir
