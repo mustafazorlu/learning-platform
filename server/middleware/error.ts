@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
-import ErrorHandler from "../utils/ErrorHandler";
+import type { NextFunction, Request, Response } from "express";
+import ErrorHandler from "../utils/ErrorHandler.js";
 
-module.exports = (
+export const ErrorMiddleware = (
     err: any,
     req: Request,
     res: Response,
