@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LMS Activation Email</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style type="text/css">
+            /* Base */
+            body {
+                margin: 0;
+                padding: 0;
+                min-width: 100%;
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                line-height: 1.5;
+                background-color: #fafafa;
+                color: #222222;
+            }
+            a {
+                color: #000;
+                text-decoration: none;
+            }
+            h1 {
+                font-size: 24px;
+                font-weight: 700;
+                line-height: 1.25;
+                margin-top: 0;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+            p {
+                margin-top: 0;
+                margin-bottom: 24px;
+            }
+            table td {
+                vertical-align: top;
+            }
+            /* Layout */
+            .email-wrapper {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+            }
+            .email-container {
+                padding: 40px 30px;
+            }
+            .header {
+                text-align: center;
+                padding-bottom: 30px;
+                border-bottom: 2px solid #f0f0f0;
+                margin-bottom: 30px;
+            }
+            .logo {
+                font-size: 28px;
+                font-weight: 700;
+                color: #222222;
+                margin-bottom: 10px;
+            }
+            .content {
+                text-align: center;
+            }
+            .greeting {
+                font-size: 18px;
+                color: #222222;
+                margin-bottom: 20px;
+            }
+            .message {
+                font-size: 16px;
+                color: #666666;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }
+            .activation-code-box {
+                background-color: #f8f9fa;
+                border: 2px dashed #dddddd;
+                border-radius: 8px;
+                padding: 25px;
+                margin: 30px 0;
+                text-align: center;
+            }
+            .activation-code-label {
+                font-size: 14px;
+                color: #666666;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 15px;
+            }
+            .activation-code {
+                font-size: 36px;
+                font-weight: 700;
+                color: #222222;
+                letter-spacing: 8px;
+                font-family: "Courier New", monospace;
+            }
+            .button-container {
+                margin: 30px 0;
+            }
+            .activation-button {
+                display: inline-block;
+                background-color: #222222;
+                color: #ffffff;
+                padding: 14px 40px;
+                border-radius: 5px;
+                font-size: 16px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: background-color 0.3s;
+            }
+            .activation-button:hover {
+                background-color: #000000;
+            }
+            .footer {
+                margin-top: 40px;
+                padding-top: 30px;
+                border-top: 2px solid #f0f0f0;
+                text-align: center;
+            }
+            .footer-text {
+                font-size: 14px;
+                color: #999999;
+                line-height: 1.5;
+            }
+            .footer-link {
+                color: #222222;
+                text-decoration: underline;
+            }
+            .warning {
+                font-size: 14px;
+                color: #999999;
+                margin-top: 30px;
+                font-style: italic;
+            }
+        </style>
+    </head>
+    <body>
+        <table
+            role="presentation"
+            cellspacing="0"
+            cellpadding="0"
+            border="0"
+            width="100%"
+        >
+            <tr>
+                <td style="padding: 40px 20px">
+                    <table
+                        role="presentation"
+                        cellspacing="0"
+                        cellpadding="0"
+                        border="0"
+                        width="100%"
+                        class="email-wrapper"
+                    >
+                        <tr>
+                            <td class="email-container">
+                                <!-- Header -->
+                                <div class="header">
+                                    <div class="logo">LMS Platform</div>
+                                </div>
+
+                                <!-- Content -->
+                                <div class="content">
+                                    <h1>Hesabınızı Aktifleştirin</h1>
+
+                                    <p class="greeting">
+                                        Merhaba <%= user.name %>,
+                                    </p>
+
+                                    <p class="message">
+                                        LMS Platform'a hoş geldiniz! Hesabınızı
+                                        aktifleştirmek için aşağıdaki aktivasyon
+                                        kodunu kullanabilirsiniz.
+                                    </p>
+
+                                    <!-- Activation Code Box -->
+                                    <div class="activation-code-box">
+                                        <div class="activation-code-label">
+                                            Aktivasyon Kodu
+                                        </div>
+                                        <div class="activation-code">
+                                            <%= activationCode %>
+                                        </div>
+                                    </div>
+
+                                    <p class="message">
+                                        Bu kodu giriş sayfasında ilgili alana
+                                        girerek hesabınızı
+                                        aktifleştirebilirsiniz.
+                                    </p>
+
+                                    <p class="warning">
+                                        Not: Bu kod 5 dakika içinde
+                                        geçerliliğini yitirecektir. Eğer bu
+                                        işlemi siz yapmadıysanız, lütfen bu
+                                        e-postayı görmezden gelin.
+                                    </p>
+                                </div>
+
+                                <!-- Footer -->
+                                <div class="footer">
+                                    <p class="footer-text">
+                                        Bu e-posta otomatik olarak
+                                        gönderilmiştir. Lütfen yanıtlamayın.<br />
+                                        Sorularınız için
+                                        <a href="#" class="footer-link"
+                                            >destek ekibimiz</a
+                                        >
+                                        ile iletişime geçebilirsiniz.
+                                    </p>
+                                    <p
+                                        class="footer-text"
+                                        style="margin-top: 20px"
+                                    >
+                                        © 2024 LMS Platform. Tüm hakları
+                                        saklıdır.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
