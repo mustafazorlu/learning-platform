@@ -33,6 +33,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@types/nodemailer": "^7.0.3",
     "tsx": "^4.20.6"
   }
 }

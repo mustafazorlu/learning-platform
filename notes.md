@@ -1,1 +1,2 @@
 -redis nedir, arastir
+-nodemailer nedir, arastir
