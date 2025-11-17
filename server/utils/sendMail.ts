@@ -12,24 +12,14 @@ interface EmailOptions {
 }
 
 const sendMail = async (options: EmailOptions) => {
-    const smtpUser = process.env.SMTP_USER || process.env.SMTP_MAIL;
-    const smtpPass = process.env.SMTP_PASSWORD;
-
-    if (!smtpUser || !smtpPass) {
-        throw new Error("SMTP credentials are missing");
-    }
-
-    const port = parseInt(process.env.SMTP_PORT || "587", 10);
-    const useSecure = port === 465;
-
     const transporter: Transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
-        port,
-        secure: useSecure,
+        port: parseInt(process.env.SMTP_PORT || "587", 10),
+        secure: process.env.SMTP_PORT,
         service: process.env.SMTP_SERVICE,
         auth: {
-            user: smtpUser,
-            pass: smtpPass,
+            user: process.env.SMTP_USER || process.env.SMTP_MAIL,
+            pass: process.env.SMTP_PASSWORD,
         },
     });
 
