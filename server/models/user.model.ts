@@ -76,11 +76,11 @@ userSchema.pre<IUser>("save", async function (next) {
 });
 
 userSchema.methods.SignAccessToken = function () {
-    return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN || '');
+    return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN || "");
 };
 
 userSchema.methods.SignAccessToken = function () {
-    return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN || '');
+    return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN || "");
 };
 
 userSchema.methods.comparePassword = async function (

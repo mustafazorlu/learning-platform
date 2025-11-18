@@ -1,4 +1,5 @@
 import nodemailer, { type Transporter } from "nodemailer";
+import type SMTPTransport from "nodemailer/lib/smtp-transport/index.js";
 import ejs from "ejs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -12,16 +13,29 @@ interface EmailOptions {
 }
 
 const sendMail = async (options: EmailOptions) => {
-    const transporter: Transporter = nodemailer.createTransport({
+    const smtpUser = process.env.SMTP_USER || process.env.SMTP_MAIL;
+    const smtpPass = process.env.SMTP_PASSWORD;
+
+    if (!smtpUser || !smtpPass) {
+        throw new Error("SMTP credentials are missing");
+    }
+
+    const port = parseInt(process.env.SMTP_PORT || "587", 10);
+    const secure = port === 465;
+
+    const transportOptions: SMTPTransport.Options = {
         host: process.env.SMTP_HOST,
-        port: parseInt(process.env.SMTP_PORT || "587", 10),
-        secure: process.env.SMTP_PORT,
+        port,
+        secure,
         service: process.env.SMTP_SERVICE,
         auth: {
-            user: process.env.SMTP_USER || process.env.SMTP_MAIL,
-            pass: process.env.SMTP_PASSWORD,
+            user: smtpUser,
+            pass: smtpPass,
         },
-    });
+    };
+
+    const transporter: Transporter =
+        nodemailer.createTransport(transportOptions);
 
     const { email, subject, template, data } = options;
 

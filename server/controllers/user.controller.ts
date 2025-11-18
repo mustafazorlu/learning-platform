@@ -8,6 +8,7 @@ import ejs from "ejs";
 import path from "path";
 import { fileURLToPath } from "url";
 import sendMail from "../utils/sendMail.js";
+import { sendToken } from "../utils/jwt.js";
 
 interface IRegistrationBody {
     name: string;
@@ -158,12 +159,14 @@ export const loginUser = CatchAsyncError(
 
             const isPasswordMatch = await user.comparePassword(password);
 
-            if(isPasswordMatch){
-                return next(new ErrorHandler('invalid email or password', 400))
+            if (!isPasswordMatch) {
+                return next(new ErrorHandler("invalid email or password", 400));
             }
+
+            sendToken(user, 200, res);
         } catch (error: any) {
             return next(
-                new ErrorHandler("please enter email and password", 400)
+                new ErrorHandler("bi sorun olustu", 400)
             );
         }
     }
