@@ -9,3 +9,5 @@ userRouter.post("/registration", registrationUser);
 userRouter.post("/activate-user", activateUser);
 
 export default userRouter;
+
+//2 44 05
