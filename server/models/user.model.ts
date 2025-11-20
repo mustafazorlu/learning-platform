@@ -79,7 +79,7 @@ userSchema.methods.SignAccessToken = function () {
     return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN || "");
 };
 
-userSchema.methods.SignAccessToken = function () {
+userSchema.methods.SignRefreshToken = function () {
     return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN || "");
 };
 

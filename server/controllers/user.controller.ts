@@ -9,6 +9,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import sendMail from "../utils/sendMail.js";
 import { sendToken } from "../utils/jwt.js";
+import { redis } from "../utils/redis.js";
 
 interface IRegistrationBody {
     name: string;
@@ -151,11 +152,15 @@ export const loginUser = CatchAsyncError(
                 );
             }
 
+            console.log("checkpoint #1");
+
             const user = await userModel.findOne({ email }).select("+password");
 
             if (!user) {
                 return next(new ErrorHandler("invalid email or password", 400));
             }
+
+            console.log("checkpoint #2");
 
             const isPasswordMatch = await user.comparePassword(password);
 
@@ -163,11 +168,29 @@ export const loginUser = CatchAsyncError(
                 return next(new ErrorHandler("invalid email or password", 400));
             }
 
+            console.log("checkpoint #3");
+
             sendToken(user, 200, res);
+            console.log("checkpoint #4");
         } catch (error: any) {
-            return next(
-                new ErrorHandler("bi sorun olustu", 400)
-            );
+            return next(new ErrorHandler("bi sorun olustu", 400));
+        }
+    }
+);
+
+export const logoutUser = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            res.cookie("access_token", "", { maxAge: 1 });
+            res.cookie("refresh_token", "", { maxAge: 1 });
+            const userId = req.user?.id || "";
+            redis.del(userId);
+            res.status(200).json({
+                success: true,
+                message: "logged out successfuly",
+            });
+        } catch (error: any) {
+            return next(new ErrorHandler(error.message, 400));
         }
     }
 );

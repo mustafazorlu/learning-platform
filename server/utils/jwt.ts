@@ -27,6 +27,8 @@ export const sendToken = (user: IUser, statusCode: number, res: Response) => {
         10
     );
 
+    
+
     const accessTokenOptions: ITokenOptions = {
         expires: new Date(Date.now() + accessTokenExpire * 1000),
         maxAge: accessTokenExpire * 1000,
