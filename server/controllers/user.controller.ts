@@ -2,13 +2,17 @@ import type { Request, Response, NextFunction } from "express";
 import userModel, { type IUser } from "../models/user.model.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import { CatchAsyncError } from "../middleware/catchAsyncError.js";
-import jwt, { type Secret } from "jsonwebtoken";
+import jwt, { type JwtPayload, type Secret } from "jsonwebtoken";
 import "dotenv/config";
 import ejs from "ejs";
 import path from "path";
 import { fileURLToPath } from "url";
 import sendMail from "../utils/sendMail.js";
-import { sendToken } from "../utils/jwt.js";
+import {
+    accessTokenOptions,
+    refreshTokenOptions,
+    sendToken,
+} from "../utils/jwt.js";
 import { redis } from "../utils/redis.js";
 
 interface IRegistrationBody {
@@ -188,6 +192,58 @@ export const logoutUser = CatchAsyncError(
             res.status(200).json({
                 success: true,
                 message: "logged out successfuly",
+            });
+        } catch (error: any) {
+            return next(new ErrorHandler(error.message, 400));
+        }
+    }
+);
+
+export const updateAccessToken = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const refresh_token = req.cookies.refresh_token as string;
+            const decoded = jwt.verify(
+                refresh_token,
+                process.env.REFRESH_TOKEN as string
+            ) as JwtPayload;
+
+            const message = "coulld not refresh token";
+
+            if (!decoded) {
+                return next(new ErrorHandler("message", 400));
+            }
+
+            const session = await redis.get(decoded.id as string);
+
+            if (!session) {
+                return next(new ErrorHandler(message, 400));
+            }
+
+            const user = JSON.parse(session);
+
+            const accessToken = jwt.sign(
+                { id: user._id },
+                process.env.ACCESS_TOKEN as string,
+                {
+                    expiresIn: "5m",
+                }
+            );
+
+            const refreshToken = jwt.sign(
+                { id: user._id },
+                process.env.REFRESH_TOKEN as string,
+                {
+                    expiresIn: "3d",
+                }
+            );
+
+            res.cookie("access_token", accessToken, accessTokenOptions);
+            res.cookie("refresh_token", refreshToken, refreshTokenOptions);
+
+            res.status(200).json({
+                status: "success",
+                accessToken,
             });
         } catch (error: any) {
             return next(new ErrorHandler(error.message, 400));

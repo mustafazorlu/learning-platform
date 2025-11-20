@@ -33,3 +33,12 @@ export const isAuthenticated = CatchAsyncError(
         next();
     }
 );
+
+export const authorizeRoles = (...roles: string[]) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        if (!roles.includes(req.user?.role || "")) {
+            return next(new ErrorHandler("role is not allowed to access", 400));
+        }
+        next();
+    };
+};
