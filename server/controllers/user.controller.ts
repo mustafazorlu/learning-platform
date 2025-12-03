@@ -14,6 +14,7 @@ import {
     sendToken,
 } from "../utils/jwt.js";
 import { redis } from "../utils/redis.js";
+import { getUserById } from "../services/user.service.js";
 
 interface IRegistrationBody {
     name: string;
@@ -245,6 +246,17 @@ export const updateAccessToken = CatchAsyncError(
                 status: "success",
                 accessToken,
             });
+        } catch (error: any) {
+            return next(new ErrorHandler(error.message, 400));
+        }
+    }
+);
+
+export const getUserInfo = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userId = req.user?._id;
+            getUserById(userId as string, res);
         } catch (error: any) {
             return next(new ErrorHandler(error.message, 400));
         }
